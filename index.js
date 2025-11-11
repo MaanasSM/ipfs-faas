@@ -350,38 +350,67 @@ app.post('/api/invoke', async (req, res) => {
     if (!Array.isArray(input)) input = [input];
 
     // 4️⃣ Execute code safely in sandbox
-    const vm = require('vm');
-    let result, error;
+    // 4️⃣ Execute code safely in sandbox (robust support for module.exports / exports / named function)
+const vm = require('vm');
+let result, error;
 
-    try {
-      // Remove comments/blank lines
-      let codeToEval = code
-        .split('\n')
-        .filter(line => !line.trim().startsWith('//') && line.trim() !== '')
-        .join('\n')
-        .trim();
+try {
+  // Clean comments/blank lines for visual clarity (but do not remove module.exports)
+  let cleaned = code
+    .split('\n')
+    .filter(line => !line.trim().startsWith('//')) // keep lines that have code (but allow inline comments)
+    .join('\n')
+    .trim();
 
-      // Strip `module.exports =` if present
-      if (codeToEval.startsWith('module.exports =')) {
-    codeToEval = codeToEval.substring('module.exports ='.length).trim();
-    }
+  // Create a sandbox exposing only minimal objects
+  const sandbox = {
+    module: { exports: {} },
+    exports: {},
+    console: { log: (...args) => {/* no-op or forward to your app log if desired */} },
+    // you can add safe utilities if needed, but keep surface minimal
+  };
+  vm.createContext(sandbox);
 
-    // remove trailing semicolon if any
-    if (codeToEval.endsWith(';')) {
-    codeToEval = codeToEval.slice(0, -1);
-    }
+  // Run original code in the sandbox. Use a timeout to prevent infinite loops.
+  vm.runInContext(cleaned, sandbox, { timeout: 1500, microtaskMode: 'afterEvaluate' });
 
-    codeToEval = '(' + codeToEval + ')';
+  // Determine exported function(s)
+  let fn = null;
 
+  // 1) If module.exports is a function, use it
+  if (typeof sandbox.module !== 'undefined' && typeof sandbox.module.exports === 'function') {
+    fn = sandbox.module.exports;
+  }
+  // 2) If exports itself is a function (rare), use it
+  else if (typeof sandbox.exports === 'function') {
+    fn = sandbox.exports;
+  }
+  // 3) If module.exports is an object and contains the named function, pick that
+  else if (typeof sandbox.module === 'object' && sandbox.module.exports && typeof sandbox.module.exports[func.name] === 'function') {
+    fn = sandbox.module.exports[func.name];
+  }
+  // 4) If the global sandbox has a function named as the registered function, use it
+  else if (typeof sandbox[func.name] === 'function') {
+    fn = sandbox[func.name];
+  }
 
-      // Run in a secure VM context
-      const fn = vm.runInNewContext(codeToEval, {}, { timeout: 500 });
-      result = await Promise.resolve(fn(...input));
+  // final check
+  if (typeof fn !== 'function') {
+    throw new Error('Evaluated module did not export a callable function. Found: ' + Object.keys(sandbox.module.exports || {}).join(', '));
+  }
 
-    } catch (e) {
-      error = e.toString();
-      result = undefined;
-    }
+  // Execute with inputs (ensure input is an array)
+  const inputs = Array.isArray(req.body.input) ? req.body.input : [req.body.input];
+  const rawResult = await Promise.resolve(fn(...inputs));
+
+  // stringify objects for safe JSON
+  result = (typeof rawResult === 'object') ? JSON.stringify(rawResult, null, 2) : rawResult;
+
+} catch (e) {
+  error = e.toString();
+  result = undefined;
+}
+
 
     // 5️⃣ Respond with result
     res.json({

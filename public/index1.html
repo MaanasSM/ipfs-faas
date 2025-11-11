@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockchain FaaS Platform</title>
+  <!-- <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    header { background: #2c3e50; color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+    header h1 { margin-bottom: 5px; }
+    header p { opacity: 0.9; }
+    
+    .tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+    .tab-btn { padding: 12px 24px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: 0.3s; }
+    .tab-btn:hover { background: #2980b9; }
+    .tab-btn.active { background: #27ae60; }
+    
+    .tab-content { display: none; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .tab-content.active { display: block; }
+    
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; }
+    input[type="text"], input[type="file"], select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+    input[type="file"] { padding: 5px; }
+    button { padding: 12px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: 0.3s; }
+    button:hover { background: #229954; }
+    button:active { transform: scale(0.98); }
+    
+    .output { background: #ecf0f1; padding: 20px; border-radius: 5px; margin-top: 20px; font-family: 'Courier New'; font-size: 13px; max-height: 400px; overflow-y: auto; }
+    .output h3 { margin-bottom: 10px; color: #2c3e50; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+    
+    .status { padding: 15px; border-radius: 5px; margin-bottom: 20px; font-weight: 600; }
+    .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .status.info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    
+    .function-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+    .function-card { background: #ecf0f1; padding: 15px; border-radius: 5px; border-left: 4px solid #3498db; }
+    .function-card h4 { color: #2c3e50; margin-bottom: 8px; }
+    .function-card p { font-size: 12px; color: #7f8c8d; margin: 5px 0; }
+    .function-card code { background: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
+    
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+    .gas-savings-card {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .gas-savings-card h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    }
+
+    .gas-savings-card p {
+    margin: 8px 0;
+    font-size: 14px;
+    }
+
+    .gas-savings-card strong {
+    font-weight: 600;
+    }
+
+    /* === Gas Fee Savings Card Enhancements === */
+.gas-savings-card {
+  background: linear-gradient(135deg, #f6f9ff, #e9efff);
+  color: #1e293b;
+  padding: 22px;
+  border-radius: 12px;
+  margin-top: 25px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gas-savings-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.gas-savings-card h4 {
+  margin-bottom: 18px;
+  font-size: 20px;
+  color: #1e40af;
+  text-align: center;
+  font-weight: 700;
+}
+
+.card-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.card-grid div {
+  flex: 1;
+  min-width: 220px;
+}
+
+.usd-block {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.usd-block p {
+  margin: 6px 0;
+  color: #334155;
+}
+
+.usd-block hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 8px 0;
+}
+
+.highlight {
+  color: #15803d;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.output pre {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  border: 1px solid #e2e8f0;
+}
+
+
+    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+  </style> -->
+
+  <style>
+  /* === Global Reset === */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a; /* Dark navy background */
+    color: #e2e8f0; /* Soft white-gray text */
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  /* === Header === */
+  header {
+    background: linear-gradient(135deg, #1e3a8a, #1e293b);
+    color: #f8fafc;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 35px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  header p {
+    color: #cbd5e1;
+    font-size: 1rem;
+  }
+
+  /* === Tabs === */
+  .tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 12px 24px;
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  .tab-btn:hover {
+    background: #334155;
+    transform: translateY(-2px);
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  }
+
+  /* === Tab Content === */
+  .tab-content {
+    display: none;
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+  .tab-content.active { display: block; }
+
+  /* === Forms === */
+  .form-group { margin-bottom: 20px; }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #cbd5e1;
+  }
+  input[type="text"], input[type="file"], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #f1f5f9;
+    font-size: 14px;
+  }
+  input[type="file"] { padding: 8px; }
+
+  button {
+    padding: 12px 22px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-1px);
+  }
+  button:active { transform: scale(0.98); }
+
+  /* === Outputs === */
+  .output {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 25px;
+    border: 1px solid #334155;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .output h3 {
+    margin-bottom: 10px;
+    color: #60a5fa;
+    font-weight: 600;
+  }
+  pre {
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 15px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+  }
+
+  /* === Status Messages === */
+  .status {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .status.success { background: #16a34a1a; color: #22c55e; border: 1px solid #15803d; }
+  .status.error { background: #b91c1c1a; color: #ef4444; border: 1px solid #b91c1c; }
+  .status.info { background: #1e40af1a; color: #60a5fa; border: 1px solid #2563eb; }
+
+  /* === Function Cards === */
+  .function-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  .function-card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #2563eb;
+    transition: all 0.3s ease;
+  }
+  .function-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+  .function-card h4 {
+    color: #f8fafc;
+    margin-bottom: 6px;
+  }
+  .function-card p { font-size: 12px; color: #94a3b8; margin: 4px 0; }
+  .function-card code {
+    background: #0f172a;
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: #93c5fd;
+  }
+
+  /* === Gas Savings Card === */
+  .gas-savings-card {
+    background: linear-gradient(135deg, #1e3a8a, #1e293b);
+    color: #f1f5f9;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 25px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .gas-savings-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  }
+  .gas-savings-card h4 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #60a5fa;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .card-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    flex-wrap: wrap;
+  }
+  .card-grid div {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .usd-block {
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #334155;
+  }
+
+  .usd-block p {
+    margin: 6px 0;
+    color: #e2e8f0;
+  }
+  .usd-block hr {
+    border: none;
+    border-top: 1px solid #334155;
+    margin: 8px 0;
+  }
+  .highlight {
+    color: #22c55e;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⛓️ Blockchain FaaS Platform</h1>
+      <p>Decentralized Function-as-a-Service powered by Ethereum Smart Contracts & IPFS</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('register')">📤 Register Function</button>
+      <button class="tab-btn" onclick="showTab('list')">📋 List Functions</button>
+      <button class="tab-btn" onclick="showTab('invoke')">▶️ Invoke Function</button>
+    </div>
+
+    <!-- REGISTER TAB -->
+    <div id="register" class="tab-content active">
+      <h2>Register a New Function</h2>
+      <p style="color: #7f8c8d; margin-bottom: 20px;">Upload your JavaScript function to store it on IPFS and register it on the blockchain.</p>
+      
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="functionName">Function Name</label>
+          <input type="text" id="functionName" placeholder="e.g., helloTest" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="codeFile">JavaScript File</label>
+          <input type="file" id="codeFile" accept=".js" required>
+          <small style="color: #7f8c8d;">Expected format: <code>module.exports = function(arg) { return result; };</code></small>
+        </div>
+        
+        <button type="submit">🚀 Register Function</button>
+      </form>
+      
+   <!-- In registerOutput div -->
+<div id="registerOutput" class="output" style="display: none;">
+  <h3>Registration Result ✅</h3>
+  <pre id="registerResult"></pre>
+
+  <!-- NEW: Gas Savings Card -->
+  <div class="gas-savings-card" id="gasSavingsCard" style="display: none;">
+    <h4>⚡ Gas Fee & Cost Savings</h4>
+    <div class="card-grid">
+      <div>
+        <p><strong>📦 File Size:</strong> <span id="fileSize"></span> KB</p>
+        <p><strong>⛽ Gas Saved:</strong> <span id="gasSaved"></span> gas</p>
+        <p><strong>💡 Reduction:</strong> <span id="costReduction"></span>x cheaper</p>
+        <p><strong>🔥 Savings:</strong> <span id="gasSavedPercent"></span>%</p>
+      </div>
+
+      <div class="usd-block">
+        <p><strong>💰 On-Chain Cost:</strong> $<span id="usdOnChain"></span></p>
+        <p><strong>⚙️ Actual Cost:</strong> $<span id="usdActual"></span></p>
+        <hr>
+        <p class="highlight"><strong>✅ USD Saved:</strong> $<span id="usdSaved"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+
+    <!-- LIST TAB -->
+    <div id="list" class="tab-content">
+      <h2>Registered Functions</h2>
+      <p style="color: #7f8c8d; margin-bottom: 20px;">All functions stored on the blockchain and IPFS.</p>
+      
+      <button onclick="listFunctions()">🔄 Refresh List</button>
+      
+      <div id="functionsOutput" class="output">
+        <h3>Functions</h3>
+        <div id="functionsList" class="function-list">
+          <p style="color: #7f8c8d;">Click refresh to load functions...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVOKE TAB -->
+    <div id="invoke" class="tab-content">
+      <h2>Invoke a Function</h2>
+      <p style="color: #7f8c8d; margin-bottom: 20px;">Select and execute a registered function with input parameters.</p>
+      
+      <div class="form-group">
+        <label for="functionSelect">Select Function</label>
+        <select id="functionSelect" required></select>
+      </div>
+      
+      <div class="form-group">
+        <label for="invokeInput">Input Parameter (JSON array, e.g., ["World"])</label>
+        <textarea id="invokeInput" rows="3" placeholder='["World"]'></textarea>
+        <small style="color: #7f8c8d;">Leave empty for no arguments. Use JSON array format for multiple arguments.</small>
+      </div>
+      
+      <button onclick="invokeFunction()">⚡ Execute Function</button>
+      
+      <div id="invokeOutput" class="output" style="display: none;">
+        <h3>Execution Result</h3>
+        <pre id="invokeResult"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000';
+
+    // Tab switching
+    function showTab(tabName) {
+      const tabs = document.querySelectorAll('.tab-content');
+      const btns = document.querySelectorAll('.tab-btn');
+      
+      tabs.forEach(tab => tab.classList.remove('active'));
+      btns.forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+      
+      if (tabName === 'list') listFunctions();
+      if (tabName === 'invoke') listFunctions();
+    }
+
+    // REGISTER
+document.getElementById('registerForm').onsubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  const file = document.getElementById('codeFile').files[0];
+  formData.append('file', file);
+  formData.append('name', document.getElementById('functionName').value);
+
+  try {
+    const res = await fetch(`${API_URL}/api/register`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    document.getElementById('registerOutput').style.display = 'block';
+    document.getElementById('registerResult').textContent = JSON.stringify(data, null, 2);
+
+    // Show gas + USD savings card
+    if (data.gasSaved) {
+      const card = document.getElementById('gasSavingsCard');
+      card.style.display = 'block';
+
+      document.getElementById('fileSize').textContent = (data.fileSize / 1024).toFixed(2);
+      document.getElementById('gasSaved').textContent = data.gasSaved.toLocaleString();
+      document.getElementById('costReduction').textContent = data.costReductionMultiple;
+      document.getElementById('gasSavedPercent').textContent = data.gasSavedPercent;
+
+      // 💲 USD values
+      document.getElementById('usdOnChain').textContent = data.usdCostOnChain;
+      document.getElementById('usdActual').textContent = data.usdCostActual;
+      document.getElementById('usdSaved').textContent = data.usdSaved;
+    }
+
+    if (data.transactionHash) {
+      alert(
+        `✅ Function registered successfully!\n` +
+        `Gas Saved: ${data.gasSavedPercent}%\n` +
+        `USD Saved: $${data.usdSaved}`
+      );
+    }
+
+    document.getElementById('registerForm').reset();
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`);
+  }
+};
+
+
+    // LIST
+    async function listFunctions() {
+      try {
+        const res = await fetch(`${API_URL}/api/functions`);
+        const data = await res.json();
+        
+        const listDiv = document.getElementById('functionsList');
+        
+        if (data.length === 0) {
+          listDiv.innerHTML = '<p style="color: #7f8c8d;">No functions registered yet.</p>';
+        } else {
+          listDiv.innerHTML = data.map(fn => `
+            <div class="function-card">
+              <h4>📦 ${fn.name}</h4>
+              <p><strong>CID:</strong> <code>${fn.cid.slice(0, 20)}...</code></p>
+              <p><strong>Uploader:</strong> <code>${fn.uploader.slice(0, 10)}...</code></p>
+              <p><strong>Timestamp:</strong> ${new Date(fn.timestamp * 1000).toLocaleString()}</p>
+            </div>
+          `).join('');
+          
+          // Update invoke dropdown
+          const select = document.getElementById('functionSelect');
+          select.innerHTML = data.map(fn => `<option value="${fn.name}">${fn.name}</option>`).join('');
+        }
+      } catch (err) {
+        alert(`❌ Error loading functions: ${err.message}`);
+      }
+    }
+
+    // INVOKE
+    async function invokeFunction() {
+      const name = document.getElementById('functionSelect').value;
+      let input = [];
+      
+      try {
+        const inputStr = document.getElementById('invokeInput').value.trim();
+        if (inputStr) {
+          input = JSON.parse(inputStr);
+          if (!Array.isArray(input)) input = [input];
+        }
+      } catch (err) {
+        alert('❌ Invalid input format. Use JSON array: ["arg1", "arg2"]');
+        return;
+      }
+      
+      try {
+        const res = await fetch(`${API_URL}/api/invoke`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, input })
+        });
+        
+        const data = await res.json();
+        
+        document.getElementById('invokeOutput').style.display = 'block';
+        document.getElementById('invokeResult').textContent = JSON.stringify(data, null, 2);
+        
+        if (data.status === 'success') {
+          alert(`✅ Function executed!\nOutput: ${data.output}`);
+        } else {
+          alert(`❌ Execution error:\n${data.output}`);
+        }
+      } catch (err) {
+        alert(`❌ Error invoking function: ${err.message}`);
+      }
+    }
+
+    // Load functions on page load
+    listFunctions();
+  </script>
+</body>
+</html>

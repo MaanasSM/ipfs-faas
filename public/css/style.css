@@ -1,0 +1,313 @@
+/* === Global Reset === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  line-height: 1.6;
+}
+
+/* === Layout Container === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* === Header === */
+header {
+  background: linear-gradient(135deg, #0d47a1, #1e3a8a);
+  text-align: center;
+  padding: 80px 20px;
+  color: #f8fafc;
+  border-radius: 12px;
+  margin-bottom: 35px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #cbd5e1;
+}
+
+/* === Sections === */
+section {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: #60a5fa;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  border-left: 5px solid #3b82f6;
+  padding-left: 10px;
+}
+
+/* === Card Styles === */
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.highlight {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+/* === Tech Stack Cards === */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.tech {
+  flex: 1 1 200px;
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.tech:hover {
+  background: #334155;
+}
+
+/* === Tabs === */
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: #334155;
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+/* === Tab Content === */
+.tab-content {
+  display: none;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.tab-content.active { display: block; }
+
+/* === Forms === */
+.form-group { margin-bottom: 20px; }
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+input[type="text"], input[type="file"], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #f1f5f9;
+  font-size: 14px;
+}
+input[type="file"] { padding: 8px; }
+
+/* === Buttons === */
+button {
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+}
+button:active { transform: scale(0.98); }
+
+/* === Outputs === */
+.output {
+  background: #0f172a;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 25px;
+  border: 1px solid #334155;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.output h3 {
+  margin-bottom: 10px;
+  color: #60a5fa;
+  font-weight: 600;
+}
+pre {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 15px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+}
+
+/* === Function Cards === */
+.function-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+.function-card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #2563eb;
+  transition: all 0.3s ease;
+}
+.function-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+.function-card h4 {
+  color: #f8fafc;
+  margin-bottom: 6px;
+}
+.function-card p { font-size: 12px; color: #94a3b8; margin: 4px 0; }
+.function-card code {
+  background: #0f172a;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #93c5fd;
+}
+
+/* === Gas Savings Card === */
+.gas-savings-card {
+  background: linear-gradient(135deg, #1e3a8a, #1e293b);
+  color: #f1f5f9;
+  padding: 25px;
+  border-radius: 12px;
+  margin-top: 25px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.gas-savings-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+}
+.gas-savings-card h4 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #60a5fa;
+  text-align: center;
+  font-weight: 700;
+}
+
+.card-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+.card-grid div {
+  flex: 1;
+  min-width: 220px;
+}
+
+.usd-block {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid #334155;
+}
+.usd-block p {
+  margin: 6px 0;
+  color: #e2e8f0;
+}
+.usd-block hr {
+  border: none;
+  border-top: 1px solid #334155;
+  margin: 8px 0;
+}
+
+/* === Diagram and Footer === */
+.diagram {
+  text-align: left;
+  margin: 40px 0;
+  font-size: 0.95rem;
+  color: #a3bffa;
+  /* border-left: 3px solid #3b82f6; */
+  padding-left: 15px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 10px;
+  background: #111827;
+  border-top: 1px solid #30363d;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  header h1 { font-size: 2.2rem; }
+  section { padding: 40px 15px; }
+  .card-grid { flex-direction: column; }
+}
