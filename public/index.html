@@ -44,6 +44,102 @@
     .function-card code { background: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
     
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+    .gas-savings-card {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .gas-savings-card h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    }
+
+    .gas-savings-card p {
+    margin: 8px 0;
+    font-size: 14px;
+    }
+
+    .gas-savings-card strong {
+    font-weight: 600;
+    }
+
+    /* === Gas Fee Savings Card Enhancements === */
+.gas-savings-card {
+  background: linear-gradient(135deg, #f6f9ff, #e9efff);
+  color: #1e293b;
+  padding: 22px;
+  border-radius: 12px;
+  margin-top: 25px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gas-savings-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.gas-savings-card h4 {
+  margin-bottom: 18px;
+  font-size: 20px;
+  color: #1e40af;
+  text-align: center;
+  font-weight: 700;
+}
+
+.card-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.card-grid div {
+  flex: 1;
+  min-width: 220px;
+}
+
+.usd-block {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.usd-block p {
+  margin: 6px 0;
+  color: #334155;
+}
+
+.usd-block hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 8px 0;
+}
+
+.highlight {
+  color: #15803d;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.output pre {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  border: 1px solid #e2e8f0;
+}
+
+
     @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -80,10 +176,33 @@
         <button type="submit">🚀 Register Function</button>
       </form>
       
-      <div id="registerOutput" class="output" style="display: none;">
-        <h3>Registration Result</h3>
-        <pre id="registerResult"></pre>
+   <!-- In registerOutput div -->
+<div id="registerOutput" class="output" style="display: none;">
+  <h3>Registration Result ✅</h3>
+  <pre id="registerResult"></pre>
+
+  <!-- NEW: Gas Savings Card -->
+  <div class="gas-savings-card" id="gasSavingsCard" style="display: none;">
+    <h4>⚡ Gas Fee & Cost Savings</h4>
+    <div class="card-grid">
+      <div>
+        <p><strong>📦 File Size:</strong> <span id="fileSize"></span> KB</p>
+        <p><strong>⛽ Gas Saved:</strong> <span id="gasSaved"></span> gas</p>
+        <p><strong>💡 Reduction:</strong> <span id="costReduction"></span>x cheaper</p>
+        <p><strong>🔥 Savings:</strong> <span id="gasSavedPercent"></span>%</p>
       </div>
+
+      <div class="usd-block">
+        <p><strong>💰 On-Chain Cost:</strong> $<span id="usdOnChain"></span></p>
+        <p><strong>⚙️ Actual Cost:</strong> $<span id="usdActual"></span></p>
+        <hr>
+        <p class="highlight"><strong>✅ USD Saved:</strong> $<span id="usdSaved"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     </div>
 
     <!-- LIST TAB -->
@@ -145,31 +264,54 @@
     }
 
     // REGISTER
-    document.getElementById('registerForm').onsubmit = async (e) => {
-      e.preventDefault();
-      
-      const formData = new FormData();
-      formData.append('file', document.getElementById('codeFile').files[0]);
-      formData.append('name', document.getElementById('functionName').value);
-      
-      try {
-        const res = await fetch(`${API_URL}/api/register`, { method: 'POST', body: formData });
-        const data = await res.json();
-        
-        document.getElementById('registerOutput').style.display = 'block';
-        document.getElementById('registerResult').textContent = JSON.stringify(data, null, 2);
-        
-        if (data.transactionHash) {
-          alert(`✅ Function registered!\nTX Hash: ${data.transactionHash}`);
-        } else {
-          alert('⚠️ Function uploaded but registration may have failed. Check console.');
-        }
-        
-        document.getElementById('registerForm').reset();
-      } catch (err) {
-        alert(`❌ Error: ${err.message}`);
-      }
-    };
+document.getElementById('registerForm').onsubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  const file = document.getElementById('codeFile').files[0];
+  formData.append('file', file);
+  formData.append('name', document.getElementById('functionName').value);
+
+  try {
+    const res = await fetch(`${API_URL}/api/register`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    document.getElementById('registerOutput').style.display = 'block';
+    document.getElementById('registerResult').textContent = JSON.stringify(data, null, 2);
+
+    // Show gas + USD savings card
+    if (data.gasSaved) {
+      const card = document.getElementById('gasSavingsCard');
+      card.style.display = 'block';
+
+      document.getElementById('fileSize').textContent = (data.fileSize / 1024).toFixed(2);
+      document.getElementById('gasSaved').textContent = data.gasSaved.toLocaleString();
+      document.getElementById('costReduction').textContent = data.costReductionMultiple;
+      document.getElementById('gasSavedPercent').textContent = data.gasSavedPercent;
+
+      // 💲 USD values
+      document.getElementById('usdOnChain').textContent = data.usdCostOnChain;
+      document.getElementById('usdActual').textContent = data.usdCostActual;
+      document.getElementById('usdSaved').textContent = data.usdSaved;
+    }
+
+    if (data.transactionHash) {
+      alert(
+        `✅ Function registered successfully!\n` +
+        `Gas Saved: ${data.gasSavedPercent}%\n` +
+        `USD Saved: $${data.usdSaved}`
+      );
+    }
+
+    document.getElementById('registerForm').reset();
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`);
+  }
+};
+
 
     // LIST
     async function listFunctions() {
